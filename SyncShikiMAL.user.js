@@ -25,13 +25,14 @@ elements1.forEach(function(elem) {
 });
 //console.log ("Оценка: ", score);
 
-let la = document.querySelectorAll("#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate.anime-48316 > div > div.b-add_to_list.dropped > form > input[type=hidden]:nth-child(3)");
+let la = document.querySelectorAll("#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(3)");
 let animeid;
 la.forEach(function(elem){animeid = elem.value});
 console.log(animeid);
 let status = document.querySelectorAll('#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(5)');
 let statusdata;
 status.forEach(function(elem){statusdata = elem.value});
+if (statusdata == "planned") {statusdata = "plan_to_watch"};
 console.log(statusdata);
 
 
@@ -54,12 +55,12 @@ onload: function(response) {
 //console.log(json.match(/"id":(.*?),/m)[1]);
 
 }});
-let url = 'https://api.myanimelist.net/v2/anime/'+animeid+'my_list_status';
+let url = 'https://api.myanimelist.net/v2/anime/'+animeid+'/my_list_status';
 let data ='status='+statusdata+'&'+'is_rewatching=false&'+'score='+score+'&'+'num_watched_episodes='+ep;
 GM_xmlhttpRequest({
 
 method: "PUT",
-url: "https://api.myanimelist.net/v2/anime/48316/my_list_status",
+url: url,
 headers: {
     "Content-Type": "application/x-www-form-urlencoded",
     "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjZiNTIxNWI4MzYzMDZkYzc1ZmQyNjRiZWVjYzJiOGZkZmE2NWM1NzY4N2M5NDQzNGY2NThkYjVmNTAwOWI4NTA1MzQyMDdlYzBlZTY0NjgyIn0.eyJhdWQiOiIyODY1YzIyOGQ0NDFkMDc2ZDg5ZDRjNjdjM2M1YTE1MyIsImp0aSI6IjZiNTIxNWI4MzYzMDZkYzc1ZmQyNjRiZWVjYzJiOGZkZmE2NWM1NzY4N2M5NDQzNGY2NThkYjVmNTAwOWI4NTA1MzQyMDdlYzBlZTY0NjgyIiwiaWF0IjoxNjczODY0MjYxLCJuYmYiOjE2NzM4NjQyNjEsImV4cCI6MTY3NjU0MjY2MSwic3ViIjoiODI4NzY2NSIsInNjb3BlcyI6W119.rADZLtE1Wboc_a_a4crvjboRB0kMNTKvoO_yiTx5j6uptXcS6x8zOskI_mq51x_LNMjrYwChoaPgqYnEX9VD2KeDHgXY6_g2olFWPqD9Pfek8cImQccUbOSAmABmxzxxIUHc5tt3GNDSqF0k3Gi3KeXiukby5RnJtPQQ2P8cZi29RlR_w67FkwflcTIMOxkHuG73e0OsKkk5T1gNRsw1Au4X3C0EY19OLzdaZahoFEH8rqN7LIw8Y8UUkBXyymfxmiEjbSXPj87IAqmHYpRsBL7UvEG17fZ3FTgBSSZJTfgpxoDCmTFlgYZyP6km2pzl2FUCVkNkfdzSsqcd0NZ--Q"
