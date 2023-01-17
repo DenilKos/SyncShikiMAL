@@ -29,7 +29,7 @@ let la = document.querySelectorAll("#animes_show > section > div:nth-child(1) > 
 let animeid;
 la.forEach(function(elem){animeid = elem.value});
 console.log(animeid);
-let status = document.querySelectorAll('#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate.anime-36028 > div > div.b-add_to_list.dropped > form > input[type=hidden]:nth-child(5)');
+let status = document.querySelectorAll('#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(5)');
 let statusdata;
 status.forEach(function(elem){statusdata = elem.value});
 console.log(statusdata);
