@@ -18,7 +18,7 @@ function ready() {
      ep = elem.textContent;
   //console.log('Просмотренно: ', ep);
 });
-let elements1 = document.querySelectorAll("#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate.anime-36028 > div > div.b-add_to_list.dropped > form > input[type=hidden]:nth-child(6)");
+let elements1 = document.querySelectorAll("#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(6)");
 var score;
 elements1.forEach(function(elem) {
     score = elem.value;
