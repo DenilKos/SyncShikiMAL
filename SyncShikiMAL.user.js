@@ -33,7 +33,7 @@ let status = document.querySelectorAll('#animes_show > section > div:nth-child(1
 let statusdata;
 status.forEach(function(elem){statusdata = elem.value});
 if (statusdata == "planned") {statusdata = "plan_to_watch"};
-console.log(statusdata);
+//console.log(statusdata);
 
 
 GM_xmlhttpRequest({
@@ -67,7 +67,7 @@ headers: {
 },
 
 data: data,
-onload: function(response){console.log(response.responseText, response.status, data)}
+onload: function(response){console.log(response.responseText, response.status)}
 })
 }
 
