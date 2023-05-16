@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ShikiSyncMAL
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.3
 // @description  try to take over the world!
 // @author       Reiki
 // @match        https://shikimori.me/*
@@ -12,9 +12,12 @@
 // @grant        GM_getValue
 // @connect      myanimelist.net
 // ==/UserScript==
+GM_getValue("CF")
+GM_getValue('Code')
+GM_getValue("RToken")
+GM_getValue('AToken')
 let atoken = GM_getValue('AToken');
 let rtoken = GM_getValue('RToken');
-async function ready(){
 let datatoken = "client_id=2865c228d441d076d89d4c67c3c5a153&client_secret=b2333ba933726682ba123cf7ab0078d30f86e489e65b0542e68d133870ff9197&grant_type=refresh_token&refresh_token="+rtoken;
 if (atoken == undefined && window.location.href == 'https://shikimori.me/') {
     function dec2hex(dec) {
@@ -61,7 +64,6 @@ if(window.location.host == 'shikimori.me' && atoken == undefined){
     let urlfirst = window.location.href;
     let code = urlfirst.split('=')[1];
     GM_setValue("Code", urlfirst.split('=')[1]);
-window.location.replace("https://shikimori.me/")
 
 
     GM_xmlhttpRequest({
@@ -73,15 +75,17 @@ window.location.replace("https://shikimori.me/")
         onload:function(response) { let a = JSON.parse(response.responseText); console.log(response.responseText);
                                    GM_setValue("AToken", a.access_token);
                                    GM_setValue("RToken", a.refresh_token);
-                                   if (atoken != undefined){
-                                       alert("Токены успешно получены и сохранены");}
+                                   if (GM_getValue("AToken") != undefined){
+                                       alert("Токены успешно получены и сохранены");
+window.location.replace('https://shikimori.me/')}
+
 
                                   }
 
 
     });
 }
-}
+
 
 
 $(document).on('click', '.hoverable-trigger', function(event) {
