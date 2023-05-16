@@ -12,11 +12,11 @@
 // @grant        GM_getValue
 // @connect      myanimelist.net
 // ==/UserScript==
-
-let Atoken = GM_getValue("AToken");
-let Rtoken = GM_getValue("RToken");
-let datatoken = "client_id=2865c228d441d076d89d4c67c3c5a153&client_secret=b2333ba933726682ba123cf7ab0078d30f86e489e65b0542e68d133870ff9197&grant_type=refresh_token&refresh_token="+Rtoken;
-if (GM_getValue('AToken') == undefined && window.location.href == 'https://shikimori.me/') {
+let atoken = GM_getValue('AToken');
+let rtoken = GM_getValue('RToken');
+async function ready(){
+let datatoken = "client_id=2865c228d441d076d89d4c67c3c5a153&client_secret=b2333ba933726682ba123cf7ab0078d30f86e489e65b0542e68d133870ff9197&grant_type=refresh_token&refresh_token="+rtoken;
+if (atoken == undefined && window.location.href == 'https://shikimori.me/') {
     function dec2hex(dec) {
         return ("0" + dec.toString(16)).substr(-2);
     }
@@ -57,10 +57,11 @@ if (GM_getValue('AToken') == undefined && window.location.href == 'https://shiki
     let urla = "https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id=2865c228d441d076d89d4c67c3c5a153&code_challenge="+GM_getValue('CF');
     window.location.replace(urla);
 }
-if(window.location.host == 'shikimori.me'){
+if(window.location.host == 'shikimori.me' && atoken == undefined){
     let urlfirst = window.location.href;
     let code = urlfirst.split('=')[1];
     GM_setValue("Code", urlfirst.split('=')[1]);
+window.location.replace("https://shikimori.me/")
 
 
     GM_xmlhttpRequest({
@@ -72,13 +73,14 @@ if(window.location.host == 'shikimori.me'){
         onload:function(response) { let a = JSON.parse(response.responseText); console.log(response.responseText);
                                    GM_setValue("AToken", a.access_token);
                                    GM_setValue("RToken", a.refresh_token);
-                                   if (GM_getValue != undefined){
+                                   if (atoken != undefined){
                                        alert("Токены успешно получены и сохранены");}
 
                                   }
 
 
     });
+}
 }
 
 
@@ -110,7 +112,7 @@ $(document).on('click', '.hoverable-trigger', function(event) {
     //console.log(statusdata);
 
     //console.log(Atoken, Rtoken);
-    let auth = 'Bearer'+' '+Atoken;
+    let auth = 'Bearer '+atoken;
     GM_xmlhttpRequest({
         method: "GET",
         url: "https://api.myanimelist.net/v2/users/@me",
