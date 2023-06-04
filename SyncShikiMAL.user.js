@@ -11,8 +11,8 @@
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @connect      myanimelist.net
-// @updateURL    https://github.com/DenilKos/SyncShikiMAL/releases/download/latest/SyncShikiMAL.user.js
-// @downloadURL  https://github.com/DenilKos/SyncShikiMAL/releases/download/latest/SyncShikiMAL.user.js
+// @updateURL    https://github.com/DenilKos/SyncShikiMAL/releases/latest/download/SyncShikiMAL.user.js
+// @downloadURL  https://github.com/DenilKos/SyncShikiMAL/releases/latest/download/SyncShikiMAL.user.js
 // ==/UserScript==
 let atoken = GM_getValue('AToken');
 let rtoken = GM_getValue('RToken');
