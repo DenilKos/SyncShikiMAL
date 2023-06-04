@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ShikiSyncMAL
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.4
 // @description  try to take over the world!
 // @author       Reiki
 // @match        https://shikimori.me/*
@@ -11,11 +11,8 @@
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @connect      myanimelist.net
+// @updateURL
 // ==/UserScript==
-GM_getValue("CF")
-GM_getValue('Code')
-GM_getValue("RToken")
-GM_getValue('AToken')
 let atoken = GM_getValue('AToken');
 let rtoken = GM_getValue('RToken');
 let datatoken = "client_id=2865c228d441d076d89d4c67c3c5a153&client_secret=b2333ba933726682ba123cf7ab0078d30f86e489e65b0542e68d133870ff9197&grant_type=refresh_token&refresh_token="+rtoken;
@@ -77,7 +74,7 @@ if(window.location.host == 'shikimori.me' && atoken == undefined){
                                    GM_setValue("RToken", a.refresh_token);
                                    if (GM_getValue("AToken") != undefined){
                                        alert("Токены успешно получены и сохранены");
-window.location.replace('https://shikimori.me/')}
+                                       window.location.replace('https://shikimori.me/')}
 
 
                                   }
@@ -86,37 +83,32 @@ window.location.replace('https://shikimori.me/')}
     });
 }
 
+let animeid;
+let statusdata;
+let ep;
+let score;
+let url;
+let auth;
+function sync(){
 
 
-$(document).on('click', '.hoverable-trigger', function(event) {
-    event.preventDefault();
-
-    var ep;
     let elements = document.querySelectorAll(".current-episodes");
     elements.forEach(function(elem, i) {
         ep = elem.textContent;
         //console.log('Просмотренно: ', ep);
     });
     let elements1 = document.querySelectorAll("#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(6)");
-    var score;
+
     elements1.forEach(function(elem) {
         score = elem.value;
     });
     //console.log ("Оценка: ", score);
 
-    let la = document.querySelectorAll("#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(3)");
-    let animeid;
 
-    la.forEach(function(elem){animeid = elem.value});
-    console.log(animeid);
-    let status = document.querySelectorAll('#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(5)');
-    let statusdata;
-    status.forEach(function(elem){statusdata = elem.value});
-    if (statusdata == "planned") {statusdata = "plan_to_watch"};
-    //console.log(statusdata);
+
 
     //console.log(Atoken, Rtoken);
-    let auth = 'Bearer '+atoken;
+    auth = 'Bearer '+atoken;
     GM_xmlhttpRequest({
         method: "GET",
         url: "https://api.myanimelist.net/v2/users/@me",
@@ -126,7 +118,7 @@ $(document).on('click', '.hoverable-trigger', function(event) {
 
         },
         onload: function(response) {if(response.status == 401) {
-        alert('Обновленные токены, поставьте оценку повторно')
+            alert('Обновленны токены, поставьте оценку повторно')
             GM_xmlhttpRequest({
                 method: "POST",
                 url: "https://myanimelist.net/v1/oauth2/token",
@@ -144,8 +136,9 @@ $(document).on('click', '.hoverable-trigger', function(event) {
         }}
     })
 
-    let url = 'https://api.myanimelist.net/v2/anime/'+animeid+'/my_list_status';
+    url = 'https://api.myanimelist.net/v2/anime/'+animeid+'/my_list_status';
     let data ='status='+statusdata+'&'+'is_rewatching=false&'+'score='+score+'&'+'num_watched_episodes='+ep;
+
     GM_xmlhttpRequest({
 
         method: "PUT",
@@ -157,9 +150,57 @@ $(document).on('click', '.hoverable-trigger', function(event) {
 
         data: data,
         onload: function(response){console.log(response.responseText, response.status); }
+    })
+}
+
+$(document).on('click', '.hoverable-trigger', function(event) {
+    event.preventDefault();
+    let la = document.querySelectorAll("#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(3)");
+
+    la.forEach(function(elem){animeid = elem.value});
+    //console.log(animeid);
+
+    statusdata = document.querySelector("#animes_show > section > div > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(5)").value;
+
+    if (statusdata == "planned") {statusdata = "plan_to_watch"};
+
+    sync();
+})
+
+$(document).on('click', '.option.add-trigger', function(event) {
+    event.preventDefault();
+    animeid = (event.target.parentElement.parentElement.parentElement.childNodes[2]).value;
+    score = 0;
+    ep = 0;
+    statusdata = (event.target.parentElement.parentElement.parentElement.childNodes[4]).value;
+    if (statusdata == "planned") {statusdata = "plan_to_watch"};
+    sync();})
+
+// document.addEventListener("click", function (event) {
+// console.log((event.target.parentElement.parentElement.parentElement.childNodes[2]).value);
+// });
+
+$(document).on('click', '.text.add-trigger', function(event) {
+    event.preventDefault();
+    animeid = (event.target.parentElement.parentElement.parentElement.childNodes[2]).value;
+    score = 0;
+    ep = 0;
+    statusdata = (event.target.parentElement.parentElement.parentElement.childNodes[4]).value;
+    if (statusdata == "planned") {statusdata = "plan_to_watch"};
+    sync();})
+$(document).on('click', '.option.remove-trigger', function(event) {
+    event.preventDefault();
+    animeid = (event.target.parentElement.parentElement.parentElement.childNodes[2]).value;
+    auth = 'Bearer '+atoken;
+    GM_xmlhttpRequest({
+
+        method: "DELETE",
+        url: url,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization":  auth,
+        },
+
+
+        onload: function(response){console.log(response.responseText, response.status); }
     })})
-
-
-
-
-
