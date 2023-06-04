@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ShikiSyncMAL
 // @namespace    http://tampermonkey.net/
-// @version      1.4
+// @version      1.4.1
 // @description  try to take over the world!
 // @author       Reiki
 // @match        https://shikimori.me/*
@@ -11,7 +11,8 @@
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @connect      myanimelist.net
-// @updateURL
+// @updateURL    https://github.com/DenilKos/SyncShikiMAL/raw/main/SyncShikiMAL.user.js
+// @downloadURL  https://github.com/DenilKos/SyncShikiMAL/raw/main/SyncShikiMAL.user.js
 // ==/UserScript==
 let atoken = GM_getValue('AToken');
 let rtoken = GM_getValue('RToken');
