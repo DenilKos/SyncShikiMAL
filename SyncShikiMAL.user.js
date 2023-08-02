@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ShikiSyncMAL
 // @namespace    http://tampermonkey.net/
-// @version      1.4.3
+// @version      1.4.4
 // @description  try to take over the world!
 // @author       Reiki
 // @match        https://shikimori.me/*
@@ -190,6 +190,22 @@ $(document).on('click', '.text.add-trigger', function(event) {
     if (statusdata == "planned") {statusdata = "plan_to_watch"};
     sync();})
 $(document).on('click', '.option.remove-trigger', function(event) {
+    event.preventDefault();
+    animeid = (event.target.parentElement.parentElement.parentElement.childNodes[2]).value;
+    auth = 'Bearer '+atoken;
+    GM_xmlhttpRequest({
+
+        method: "DELETE",
+        url: url,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization":  auth,
+        },
+
+
+        onload: function(response){console.log(response.responseText, response.status); }
+    })});
+$(document).on('click', '.remove', function(event) {
     event.preventDefault();
     animeid = (event.target.parentElement.parentElement.parentElement.childNodes[2]).value;
     auth = 'Bearer '+atoken;
