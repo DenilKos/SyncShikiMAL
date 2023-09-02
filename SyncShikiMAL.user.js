@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ShikiSyncMAL
 // @namespace    http://tampermonkey.net/
-// @version      1.4.4
+// @version      1.4.5
 // @description  try to take over the world!
 // @author       Reiki
 // @match        https://shikimori.me/*
@@ -193,6 +193,7 @@ $(document).on('click', '.option.remove-trigger', function(event) {
     event.preventDefault();
     animeid = (event.target.parentElement.parentElement.parentElement.childNodes[2]).value;
     auth = 'Bearer '+atoken;
+url = 'https://api.myanimelist.net/v2/anime/'+animeid+'/my_list_status';
     GM_xmlhttpRequest({
 
         method: "DELETE",
@@ -209,6 +210,7 @@ $(document).on('click', '.remove', function(event) {
     event.preventDefault();
     animeid = (event.target.parentElement.parentElement.parentElement.childNodes[2]).value;
     auth = 'Bearer '+atoken;
+url = 'https://api.myanimelist.net/v2/anime/'+animeid+'/my_list_status';
     GM_xmlhttpRequest({
 
         method: "DELETE",
@@ -221,7 +223,7 @@ $(document).on('click', '.remove', function(event) {
 
         onload: function(response){console.log(response.responseText, response.status); }
     })})
-$(document).ready(function() {
+$(document).ready(function() { if (document.URL.indexOf("list") > -1){}else{
 let la = document.querySelectorAll("#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(3)");
 
     la.forEach(function(elem){animeid = elem.value});
@@ -231,7 +233,7 @@ let la = document.querySelectorAll("#animes_show > section > div:nth-child(1) > 
 
     if (statusdata == "planned") {statusdata = "plan_to_watch"};
 
-    sync();
+    sync();}
 
 });
  $(document).on('turbolinks:load', function(){
