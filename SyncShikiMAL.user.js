@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         ShikiSyncMAL
 // @namespace    http://tampermonkey.net/
-// @version      1.4.5
+// @version      1.4.6
 // @description  try to take over the world!
 // @author       Reiki
-// @match        https://shikimori.me/*
+// @match        https://shikimori.one/*
 // @match        https://myanimelist.net/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        GM_xmlhttpRequest
