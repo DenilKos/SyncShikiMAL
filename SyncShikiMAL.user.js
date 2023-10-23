@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ShikiSyncMAL
 // @namespace    http://tampermonkey.net/
-// @version      1.4.7
+// @version      1.4.8
 // @description  try to take over the world!
 // @author       Reiki
 // @match        https://shikimori.one/*
@@ -118,8 +118,9 @@ function sync(){
             "Authorization":  auth,
 
         },
-        onload: function(response) {if(response.status == 401) {
-            alert('Обновленны токены, поставьте оценку повторно')
+        onload: function lol(response) {if(response.status == 401) {
+           // alert('Обновленны токены, поставьте оценку повторно')
+
             GM_xmlhttpRequest({
                 method: "POST",
                 url: "https://myanimelist.net/v1/oauth2/token",
@@ -132,6 +133,7 @@ function sync(){
                                             GM_setValue("AToken", token1.access_token);
                                             GM_setValue("RToken", token1.refresh_token);
                                             //console.log(token1.access_token)
+atoken = GM_getValue('AToken'); rtoken = GM_getValue('RToken'); sync();
                                            }
             })
         }}
