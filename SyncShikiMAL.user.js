@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ShikiSyncMAL
 // @namespace    http://tampermonkey.net/
-// @version      1.4.8
+// @version      1.4.9
 // @description  try to take over the world!
 // @author       Reiki
 // @match        https://shikimori.one/*
@@ -64,7 +64,7 @@ if(window.location.host == 'shikimori.one' && atoken == undefined){
     GM_setValue("Code", urlfirst.split('=')[1]);
 
 
-    GM_xmlhttpRequest({
+    GM_xmlhttpRequest({ //Запрос на новые токены
         method: "POST",
         url: "https://myanimelist.net/v1/oauth2/token",
         headers: {
@@ -161,7 +161,7 @@ $(document).on('click', '.hoverable-trigger', function(event) {
     let la = document.querySelectorAll("#animes_show > section > div:nth-child(1) > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(3)");
 
     la.forEach(function(elem){animeid = elem.value});
-    //console.log(animeid);
+
 
     statusdata = document.querySelector("#animes_show > section > div > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(5)").value;
 
@@ -173,6 +173,7 @@ $(document).on('click', '.hoverable-trigger', function(event) {
 $(document).on('click', '.option.add-trigger', function(event) {
     event.preventDefault();
     animeid = (event.target.parentElement.parentElement.parentElement.childNodes[2]).value;
+
     score = 0;
     ep = 0;
     statusdata = (event.target.parentElement.parentElement.parentElement.childNodes[4]).value;
@@ -185,17 +186,21 @@ $(document).on('click', '.option.add-trigger', function(event) {
 
 $(document).on('click', '.text.add-trigger', function(event) {
     event.preventDefault();
+
     animeid = (event.target.parentElement.parentElement.parentElement.childNodes[2]).value;
     score = 0;
     ep = 0;
+
     statusdata = (event.target.parentElement.parentElement.parentElement.childNodes[4]).value;
     if (statusdata == "planned") {statusdata = "plan_to_watch"};
     sync();})
-$(document).on('click', '.option.remove-trigger', function(event) {
+$(document).on('click', '.option.remove-trigger', function(event) { // Удаление из списка
     event.preventDefault();
-    animeid = (event.target.parentElement.parentElement.parentElement.childNodes[2]).value;
+
+    animeid = (event.target.parentElement.parentElement.parentElement.parentElement.childNodes[2]).value;
     auth = 'Bearer '+atoken;
-url = 'https://api.myanimelist.net/v2/anime/'+animeid+'/my_list_status';
+    url = 'https://api.myanimelist.net/v2/anime/'+animeid+'/my_list_status';
+
     GM_xmlhttpRequest({
 
         method: "DELETE",
@@ -212,7 +217,8 @@ $(document).on('click', '.remove', function(event) {
     event.preventDefault();
     animeid = (event.target.parentElement.parentElement.parentElement.childNodes[2]).value;
     auth = 'Bearer '+atoken;
-url = 'https://api.myanimelist.net/v2/anime/'+animeid+'/my_list_status';
+    url = 'https://api.myanimelist.net/v2/anime/'+animeid+'/my_list_status';
+
     GM_xmlhttpRequest({
 
         method: "DELETE",
@@ -233,9 +239,11 @@ let la = document.querySelectorAll("#animes_show > section > div:nth-child(1) > 
 
     statusdata = document.querySelector("#animes_show > section > div > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(5)").value;
 
-    if (statusdata == "planned") {statusdata = "plan_to_watch"};
+    if (statusdata == "planned" && document.querySelector("#animes_show > section > div > div.menu-slide-outer.x199 > div > div > div.block > div.b-db_entry > div.c-image > div.b-user_rate.anime-52635 > div > div.b-add_to_list > form > div.trigger > div.edit-trigger").isConnected == true) {statusdata = "plan_to_watch";};
 
-    sync();}
+
+sync();
+ }
 
 });
  $(document).on('turbolinks:load', function(){
@@ -246,7 +254,7 @@ let la = document.querySelectorAll("#animes_show > section > div:nth-child(1) > 
 
     statusdata = document.querySelector("#animes_show > section > div > div.menu-slide-outer.x199 > div > div > div:nth-child(1) > div.b-db_entry > div.c-image > div.b-user_rate > div > div.b-add_to_list > form > input[type=hidden]:nth-child(5)").value;
 
-    if (statusdata == "planned") {statusdata = "plan_to_watch"};
-
-    sync();
+     if (statusdata == "planned" && document.querySelector("#animes_show > section > div > div.menu-slide-outer.x199 > div > div > div.block > div.b-db_entry > div.c-image > div.b-user_rate.anime-52635 > div > div.b-add_to_list > form > div.trigger > div.edit-trigger").isConnected == true) {statusdata = "plan_to_watch"; };
+sync();
+    
 });
